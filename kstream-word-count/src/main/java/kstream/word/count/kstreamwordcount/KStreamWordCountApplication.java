@@ -42,7 +42,6 @@ public class KStreamWordCountApplication {
 					.toStream()
 					.map((key, value) -> new KeyValue<>(null, new WordCount(key.key(), value, new Date(key.window().start()), new Date(key.window().end()))));
 		}
-
 	}
 
 	static class WordCount {
