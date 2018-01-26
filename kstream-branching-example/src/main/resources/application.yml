@@ -6,15 +6,15 @@ spring.cloud.stream.kstream.binder.configuration:
   key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
   value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
 spring.cloud.stream.bindings.output1:
-  destination: counts
+  destination: english-counts
   producer:
     headerMode: raw
 spring.cloud.stream.bindings.output2:
-  destination: foo
+  destination: french-counts
   producer:
     headerMode: raw
 spring.cloud.stream.bindings.output3:
-  destination: bar
+  destination: spanish-counts
   producer:
     headerMode: raw
 spring.cloud.stream.bindings.input:
@@ -23,5 +23,5 @@ spring.cloud.stream.bindings.input:
   consumer:
     headerMode: raw
 spring.cloud.stream.kstream.binder:
-  brokers: localhost #192.168.99.100
-  zkNodes: localhost #192.168.99.100
+  brokers: 192.168.99.100 #localhost
+  zkNodes: 192.168.99.100 #localhost

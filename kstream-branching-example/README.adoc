@@ -7,6 +7,8 @@ It uses a single input and 3 output destinations.
 In essence, the application receives text messages from an input topic, filter them by language (Englihs, French, Spanish and ignoring the rest), and computes word occurrence counts in a configurable time window and report that in the output topics.
 This sample uses lambda expressions and thus requires Java 8+.
 
+By default native decoding and encoding are disabled and this means that any deserializaion on inbound and serialization on outbound is performed by the Binder using the configured content types.
+
 ==== Starting Kafka in a docker container
 
 * Skip steps 1-3 if you already have a non-Docker Kafka environment.
