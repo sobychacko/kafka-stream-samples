@@ -1,10 +1,10 @@
 == What is this app?
 
-This is an example of a Spring Cloud Stream processor using Kafka Streams support.
+This is an example of a Spring Cloud Stream processor using Kafka Streams branching support.
 
 The example is based on the word count application from the https://github.com/confluentinc/examples/blob/3.2.x/kafka-streams/src/main/java/io/confluent/examples/streams/WordCountLambdaExample.java[reference documentation].
-It uses a single input and a single output.
-In essence, the application receives text messages from an input topic and computes word occurrence counts in a configurable time window and report that in an output topic.
+It uses a single input and 3 output destinations.
+In essence, the application receives text messages from an input topic, filter them by language (Englihs, French, Spanish and ignoring the rest), and computes word occurrence counts in a configurable time window and report that in the output topics.
 This sample uses lambda expressions and thus requires Java 8+.
 
 ==== Starting Kafka in a docker container
@@ -19,13 +19,16 @@ Assuming that you are running kafka on a docker container on mac osx. Change the
 `bin/kafka-console-producer.sh --broker-list 192.168.99.100:9092 --topic words`
 5. Start the console consumer: +
 Assuming that you are running kafka on a docker container on mac osx. Change the zookeeper IP address accordingly otherwise. +
-`bin/kafka-console-consumer.sh --bootstrap-server 192.168.99.100:9092 --topic counts`
+a. `bin/kafka-console-consumer.sh --bootstrap-server 192.168.99.100:9092 --topic counts`
+b. On another console: `bin/kafka-console-consumer.sh --bootstrap-server 192.168.99.100:9092 --topic foo`
+c. On another console: `bin/kafka-console-consumer.sh --bootstrap-server 192.168.99.100:9092 --topic bar`
+
 
 === Running the app:
 
 Go to the root of the repository and do: `./mvnw clean package`
 
-`java -jar target/kstream-word-count-0.0.1-SNAPSHOT.jar`
+`java -jar target/kstream-branching-example-0.0.1-SNAPSHOT.jar --spring.cloud.stream.kstream.timeWindow.length=60000`
 
 * By default we use the docker container IP (mac osx specific) in the `application.yml` for Kafka broker and zookeeper.
 Change it in `application.yml` (which requires a rebuild) or pass them as runtime arguments as below.
@@ -33,15 +36,12 @@ Change it in `application.yml` (which requires a rebuild) or pass them as runtim
 `spring.cloud.stream.kstream.binder.brokers=<Broker IP Address>` +
 `spring.cloud.stream.kstream.binder.zkNodes=<Zookeeper IP Address>`
 
-Enter some text in the console producer and watch the output in the console consumer.
+Enter text ("English", "French", "Spanish" - case doesn't matter) in the console producer and watch the output in the respetive console consumer - The word "english" goes to topic english-counts, "french" goes to topic french-counts and "spanish" goes to spanish-counts.
 
-The default time window is configured for 5 seconds and you can change that using the following property.
 
-`kstream.word.count.windowLength` (value is expressed in milliseconds)
-
-In order to switch to a hopping window, you can use the `kstream.word.count.advanceBy` (value in milliseconds).
+In order to switch to a hopping window, you can use the `spring.cloud.stream.kstream.timeWindow.advanceBy` (value in milliseconds).
 This will create an overlapped hopping windows depending on the value you provide.
 
 Here is an example with 2 overlapping windows (window length of 10 seconds and a hop (advance) by 5 seconds:
 
-`java -jar target/kstream-word-count-0.0.1-SNAPSHOT.jar --kstream.word.count.windowLength=10000 --kstream.word.count.advanceBy=5000`
+`java -jar target/kstream-branching-example-0.0.1-SNAPSHOT.jar --spring.cloud.stream.kstream.timeWindow.length=10000 --spring.cloud.stream.kstream.timeWindow.=5000`
