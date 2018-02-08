@@ -37,11 +37,11 @@ Enter some text in the console producer and watch the output in the console cons
 
 The default time window is configured for 5 seconds and you can change that using the following property.
 
-`kstream.word.count.windowLength` (value is expressed in milliseconds)
+`spring.cloud.stream.kstream.timeWindow.length` (value is expressed in milliseconds)
 
-In order to switch to a hopping window, you can use the `kstream.word.count.advanceBy` (value in milliseconds).
+In order to switch to a hopping window, you can use the `spring.cloud.stream.kstream.timeWindow.advnceBy` (value in milliseconds).
 This will create an overlapped hopping windows depending on the value you provide.
 
 Here is an example with 2 overlapping windows (window length of 10 seconds and a hop (advance) by 5 seconds:
 
-`java -jar target/kstream-word-count-0.0.1-SNAPSHOT.jar --kstream.word.count.windowLength=10000 --kstream.word.count.advanceBy=5000`
+`java -jar target/kstream-word-count-0.0.1-SNAPSHOT.jar --spring.cloud.stream.kstream.timeWindow.length=10000 --spring.cloud.stream.kstream.timeWindow.advnceBy=5000`

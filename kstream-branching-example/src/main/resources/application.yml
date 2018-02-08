@@ -23,5 +23,5 @@ spring.cloud.stream.bindings.input:
   consumer:
     headerMode: raw
 spring.cloud.stream.kstream.binder:
-  brokers: 192.168.99.100 #localhost
-  zkNodes: 192.168.99.100 #localhost
+  brokers: localhost #192.168.99.100 #localhost
+  zkNodes: localhost #192.168.99.100 #localhost
